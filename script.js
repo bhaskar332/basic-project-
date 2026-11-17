@@ -1,21 +1,50 @@
-const wrapper = document.querySelector('.wrapper');
-const loginLink = document.querySelector('.login-link');
-const registerLink = document.querySelector('.register-link');
-const btnPopup = document.querySelector('.btnLogin-popup');
-const iconclose = document.querySelector('.icon-close');
+const form = document.getElementById("donorForm");
 
-registerLink.addEventListener('click', ()=> {
-    wrapper.classList.add('active');
+if(form){
+
+form.addEventListener("submit", function(e){
+
+e.preventDefault();
+
+let donor = {
+name: document.getElementById("name").value,
+blood: document.getElementById("blood").value,
+organ: document.getElementById("organ").value,
+city: document.getElementById("city").value,
+phone: document.getElementById("phone").value
+};
+
+let donors = JSON.parse(localStorage.getItem("donors")) || [];
+
+donors.push(donor);
+
+localStorage.setItem("donors", JSON.stringify(donors));
+
+alert("Donor Registered Successfully");
+
+form.reset();
+
+});
+}
+
+const donorTable = document.getElementById("donorTable");
+
+if(donorTable){
+
+let donors = JSON.parse(localStorage.getItem("donors")) || [];
+
+donors.forEach(d => {
+
+let row = `<tr>
+<td>${d.name}</td>
+<td>${d.blood}</td>
+<td>${d.organ}</td>
+<td>${d.city}</td>
+<td>${d.phone}</td>
+</tr>`;
+
+donorTable.innerHTML += row;
+
 });
 
-loginLink.addEventListener('click', ()=> {
-    wrapper.classList.remove('active');
-});
-
-btnPopup.addEventListener('click', ()=> {
-    wrapper.classList.add('active-popup');
-});
-
-iconclose.addEventListener('click', ()=> {
-    wrapper.classList.remove('active-popup');
-});
+}
